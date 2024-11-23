@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/host_join.css">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script>
+var idDuplicateChecker = 0;
+
+	function formCheck() {
+
+		if (idDuplicateChecker == 0) {
+			alert('아이디 중복체크를 해주세요');
+			$("#host_email").focus();
+			return false;
+		}
+
+		let password = $("#host_password");
+		let passwordcheck = $("#host_passwordcheck")
+		if (password.val().length < 4 || password.val().length > 20) {
+			alert("패스워드는 4~20 자리 사이여야 합니다.");
+			$("#host_password").focus();
+			return false;
+		}
+
+		if (password.val() != passwordcheck.val()) {
+			alert("패스워드가 일치 하지 않습니다. 패스워드를 다시 확인해주세요.")
+			$("#host_passwordcheck").focus();
+			return false;
+		}
+
+		let name = $("#host_name");
+		if (name.val() == "") {
+			alert("이름을 입력해주세요")
+			$("#host_name").focus();
+			return false;
+		}
+
+		let phone = $("#host_phone");
+		if (phone.val().length != 11) {
+			alert("하이픈 (\"-\")를 제외한 숫자 11자리를 입력해주세요.")
+			$("#host_phone").focus();
+			return false;
+		}
+		
+		alert("회원가입이 완료 되었습니다. 로그인 창으로 이동합니다")
+
+		return true;
+	}
+	function emailCheck() {
+		var host_email = $('#host_email').val();
+		
+		if (host_email.indexOf('@') === -1) {
+            alert("올바른 이메일 형식으로 입력해주세요.");
+            return;
+        }
+		
+		$.ajax({
+			url : "/host/emailCheck",
+			type : "post",
+			data : host_email,
+			dataType : "json",
+			contentType : "application/json; charset=UTF-8",
+			success : function(cnt) {
+				if (cnt > 0) {
+					alert("사용 중인 이메일이 있습니다. 다시 입력해주세요");
+					$('#host_email').val('');
+					$("#host_email").focus();
+				} else {
+					alert("사용 가능한 이메일 입니다.");
+					$("#host_password").focus();
+					idDuplicateChecker = 1;
+				}
+			},
+			error : function(error) {
+					alert("다시 입력해주세요");
+				}
+			});
+	};
+</script>
+<title>Host Join</title>
+</head>
+
+<body>
+    <form action="/host/join" method="post" th:object="${hostJoinForm}" onsubmit="return formCheck()">
+        <h1>host join</h1>
+      	<div th:if="${#fields.hasGlobalErrors()}">
+         	<p th:each="err: ${#fields.globalErrors()}" th:text="${err}" class="error"></p>
+      	</div>
+        <div th:errors="*{host_email}" class="error"></div>
+	    <div class="emailwrap">
+	        <input type="text" placeholder="email" class="email" th:field="*{host_email}">
+	        <input type="button" value="중복확인" onclick="emailCheck()"class="bt"><br>
+	    </div>
+        
+        <div th:errors="*{host_password}" class="error"></div>
+        <input type="password" placeholder="password" class="info" th:field="*{host_password}"><br>
+        
+        <input type="password" placeholder="password 확인" class="info" id="host_passwordcheck"><br>
+        
+        <div th:errors="*{host_name}" class="error"></div>
+        <input type="text" placeholder="name" class="info" th:field="*{host_name}"><br>
+        
+        <div th:errors="*{host_phone}" class="error"></div>
+        <input type="tel" placeholder="휴대전화 번호 (하이픈 제외 11자리)" class="info" th:field="*{host_phone}"><br>
+        <input type="submit" value="회원가입" class="loginbt"><br>
+    </form>
+</body>
+
+</html>

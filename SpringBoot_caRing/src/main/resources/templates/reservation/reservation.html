@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/reservation.css">
+    <script src="https://kit.fontawesome.com/d1fa9340d9.js" crossorigin="anonymous"></script>
+    <title>reservation</title>
+</head>
+<body>
+    <header>
+		<div class="hwrap">
+			<div class="logo">
+				<h1>
+					<a href="/"> <img src="/img/logo.png" alt="caRing main logo">
+					</a>
+				</h1>
+			</div>
+			<!--logo-->
+
+			<div class="user">
+				<a href="#"> 
+					<img src="/img/icons8-menu-64.png" alt="user menu logo"> 
+
+					<span class="profileImg" th:unless="${session.loginCustomer}">
+						<img src="/img/icons8-user-48.png" alt="user logo">
+					</span>
+					<span class="profileImg" th:if="${session.loginCustomer}">
+						<img src="https://img.icons8.com/ios-filled/50/6e7a77/car-roof-box.png" alt="car-roof-box"/>
+					</span>
+				</a>
+			</div>
+			<!--user-->
+			<!--user-->
+		</div>
+		<!--hwrap-->
+
+		<div class="lnb-container">
+			<div class="lnbclose"></div>
+			<div class="lnb">
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/profile">회원정보 수정</a></li>
+					<li><a href="/reservation/reservationlist">예약 내역 조회</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+				<ul th:unless=${session.loginCustomer}>
+					<li><a href="/customer/login">USER 로그인 / 회원가입</a></li>
+					<li><a href="/host/login">HOST 로그인 / 회원가입</a></li>
+				</ul>
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/logout">로그아웃</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+    <form class="reservationwrap" method="post" th:object="${reservation}" action="/reservation/reservation" onsubmit="return validateForm();">
+    <input type="hidden" name="board_id" th:value="${boardDTO.board.board_id}">
+        <!--전체적인 틀-->
+
+        <div class="revservation">
+            <!--반죽갈-->
+            <h1>예약 확인</h1>
+            <div class="data">
+                <p class="dateTitle">날짜</p>
+                <p class="date">
+                    <span th:text="${reservation.rent_start}"></span> ~ <span th:text="${reservation.rent_end}"></span>
+                </p>
+                <input type="hidden" id="date1" name="rent_start" th:value="${reservation.rent_start}">
+                <input type="hidden" id="date2" name="rent_end" th:value="${reservation.rent_end}">
+            </div>
+
+            <div class="check">
+                <!--보험선택-->
+                <h2>보험 선택</h2>
+               
+                <div class="label">
+                 <label>기본 </label> <input type="radio" name="check" class="default" value="보험 선택사항">
+             </div>
+             <div class="label">
+                 <label> 프리미엄</label> <input type="radio" name="check" class="premium" value="보험 선택사항">
+                </div>
+                         
+            
+
+            <div class="insurance">
+                <!--결제 방법-->
+                <h2>결제 방법</h2>
+                <div class="label">
+                    <label>신용카드 </label> <input type="radio" name="pay" value="보험 선택사항">
+                </div>
+                <div class="label">
+                    <label>예약금 먼저 결제</label> <input type="radio" name="pay" value="보험 선택사항">
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <div class="carinfo" th:object="${boardDTO}">
+            <div class="border">
+                <div class="carInfoWrap">
+                    <div class="carImg">
+                        <!--<h6>차정보</h6>-->
+                        <img th:src="*{car.thumbnail}" alt="reservation car photo1">
+                    </div>
+                    <!--carImg-->
+                    <p class="carTitle" th:text="*{board.title}"></p>
+                    <h4>요금정보</h4>
+
+                    <div class="priceInfo">
+                        <div id="result" class="days"></div>
+                        <p th:text="*{board.price} + 원"></p>
+                        <input type="hidden" id="results"> 
+                        <input type="hidden" id="perPrice" th:value="*{board.price}">
+                    </div>
+                    <!--priceInfo-->
+
+                    <p id="totalPrice" class="totalPrice"></p>
+                    <input type="hidden" id="totalPrice1" name="totalPrice">
+
+                </div>
+                <!--carInfoWrap-->
+            </div>
+            <div class="resBtn">
+	            <input type="submit" value="예약하기" class="submit">
+            </div><!-- resBtn -->
+            <!--border-->
+        </div>
+        <!--carinfo-->
+    </form>
+    <!--reservationwrap-->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+		$(function() {
+			$(".lnb, .lnbclose").hide();
+			$(".user").click(function() {
+				$(".lnb, .lnbclose").toggle();
+			})
+	
+			$('.lnbclose').click(function() {
+				$('.lnb, .lnbclose').hide();
+			})
+		})
+		
+		function dateCal() {
+	        const date1 = new Date(document.getElementById("date1").value);
+	        const date2 = new Date(document.getElementById("date2").value);
+	        const diffTime = date2.getTime() - date1.getTime();
+	        const diffDays = diffTime / (1000 * 60 * 60 * 24) + 1;
+	
+	        document.getElementById("result").innerHTML = diffDays + "일";
+	
+	        const price = document.getElementById("perPrice").value;
+	        const total = diffDays * price;
+	        document.getElementById("totalPrice").innerHTML = total + "원";
+	        document.getElementById("totalPrice1").value = total;
+	        console.log(totalPrice1);
+	    }
+	    window.onload = function () {
+	        dateCal();
+	    };
+	    
+	    function validateForm() {
+	         var checkSelected = false;
+	         var paySelected = false;
+	
+	         // "check"에 대한 라디오 버튼이 선택되었는지 확인합니다.
+	         var checkRadios = document.getElementsByName("check");
+	         for (var i = 0; i < checkRadios.length; i++) {
+	           if (checkRadios[i].checked) {
+	             checkSelected = true;
+	             break;
+	           }
+	         }
+	
+	         // "pay"에 대한 라디오 버튼이 선택되었는지 확인합니다.
+	         var payRadios = document.getElementsByName("pay");
+	         for (var i = 0; i < payRadios.length; i++) {
+	           if (payRadios[i].checked) {
+	             paySelected = true;
+	             break;
+	           }
+	         }
+	
+	         // 라디오 버튼이 선택되지 않은 경우 경고 메시지를 표시합니다.
+	         if (!checkSelected) {
+	           alert("보험을 선택해주세요.");
+	           return false;
+	         }
+	
+	         if (!paySelected) {
+	           alert("결제 방법을 선택해주세요.");
+	           return false;
+	         }
+	
+	         // 폼 유효성 검사가 통과됨
+	         return true;
+	       }
+	</script>
+
+</body>
+
+</html>

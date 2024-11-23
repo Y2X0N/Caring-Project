@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/host_reservation.css">
+<title>reservation List</title>
+</head>
+<body>
+	<header>
+		<div class="hwrap">
+			<div class="mainlogo">
+				<h1>
+					<a href="/host/main"> <img src="/img/logo ver2.png"
+						alt="main logo ver.2">
+						<p>Host Page</p>
+					</a>
+				</h1>
+			</div>
+			<!--mainlogo-->
+
+			<div class="profile">
+				<div class="profileImg" th:unless=${host.host_img}>
+					<img src="/img/userlogo.png" alt="user logo ver.2">
+				</div>
+				<div class="profileImg" th:if="${host.host_img}">
+					<img th:src="${host.host_img}" alt="profile Img">
+				</div>
+			</div>
+			<!--profile-->
+		</div>
+		<!--hwrap-->
+
+		<div class="lnb-container">
+			<div class="lnbclose"></div>
+			<div class="lnb">
+				<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="/host/profile">회원정보 수정</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="/host/login">로그아웃</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--lnb-container-->
+	</header>
+
+	<form method="post">
+		<div class="warp">
+			<h1>예약 확인</h1>
+			<div class="mainwrap" th:object="${reservationDTO}">
+				<div class="car">
+					<div class="carImg">
+						<img th:src="*{boardDTO.car.thumbnail}">
+					</div><!-- carImg -->
+	
+					<div class="carinfo">
+						<h2 class="title" th:text="*{boardDTO.board.title}"></h2><br>
+						<p class="price">
+							<span th:text="*{reservation.total_price}"></span>원
+						</p><br>
+						<p class="data">
+							<span th:text="*{reservation.rent_start}"></span>
+							~
+							<span th:text="*{reservation.rent_end}"></span>
+						</p>
+					</div><!--carinfo-->
+				</div><!--car-->
+	
+				<div class="reservation">
+					<div class="map" id="googleMap"></div>
+					
+					<div class="customerinfo">
+						<div class="customerphoto">
+							<img th:src="${customer.customer_img}" th:if=${customer.customer_img}>
+							<img src="/img/userlogo-green.png" alt="user logo" th:unless=${customer.customer_img}>
+						</div><!-- customerphoto -->
+	
+						<div class="info">
+							<p class="name">
+								예약자 성함: <span th:text="${customer.customer_name}"></span>
+							</p>
+							<p class="email">
+								예약자 이메일:<br>
+								<span th:text="${customer.customer_email}"></span>
+							</p>
+							<p class="phone">
+								예약자 핸드폰 번호:<br>
+								<span th:text="${customer.customer_phone}"></span>
+							</p>
+						</div><!--info-->
+					</div><!--customerinfo-->
+				</div><!-- reservation -->
+			</div><!-- mainwrap -->
+		</div><!--warp-->
+
+		<div class="btwrap" th:if="${reservationDTO.reservation.status == 1}">
+			<input type="submit" value="예약 확정" th:formaction="@{/host/confirm(reservation_id=${reservationDTO.reservation.reservation_id})}"> 
+			<input type="submit" value="예약 거절" th:formaction="@{/host/reject(reservation_id=${reservationDTO.reservation.reservation_id})}">
+		</div><!--btwrap-->
+	</form>
+
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCohcEtokIbEDDmWarMHZTTWAW8sffjywM&libraries=places&callback=myMap" async defer></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://kit.fontawesome.com/d1fa9340d9.js" crossorigin="anonymous"></script>
+	<script>
+		$(function() {
+			$(".lnb, .lnbclose").hide();
+	           $(".profile").click(function () {
+	               $(".lnb, .lnbclose").toggle();
+	           })
+	   
+	           $('.lnbclose').click(function () {
+	               $('.lnb, .lnbclose').hide();
+	           })
+		})
+	</script>
+	<script th:inline="javascript">
+	const lat = [[${reservationDTO.boardDTO.board.lat}]];
+	const lng = [[${reservationDTO.boardDTO.board.lng}]];
+	var map;
+		function myMap() {
+				map = new google.maps.Map(document.getElementById('googleMap'), {
+				center : new google.maps.LatLng(lat, lng),
+				zoom : 12,
+				styles: [
+					  {
+						    "featureType": "administrative",
+						    "elementType": "geometry",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  },
+						  {
+						    "featureType": "poi",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  },
+						  {
+						    "featureType": "road",
+						    "elementType": "labels.icon",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  },
+						  {
+						    "featureType": "transit",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  }
+						]
+				});
+				
+					var marker = new google.maps.Marker({
+					position : new google.maps.LatLng(lat, lng),
+					map : map
+					});
+		};
+</script>
+</body>
+
+</html>

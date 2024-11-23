@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/car_resi.css">
+    <script src="https://kit.fontawesome.com/d1fa9340d9.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+        var sel_files = [];
+        
+        $(document).ready(function () {
+        	
+        	$(".lnb, .lnbclose").hide();
+	        $(".profile").click(function () {
+	            $(".lnb, .lnbclose").toggle();
+	        })
+	
+	        $('.lnbclose').click(function () {
+	            $('.lnb, .lnbclose').hide();
+	        })
+	        
+            $("#carUpload").on("change", handleImgsFilesSelect);
+            
+            var yearList = [];
+            for (var year = 1990; year <= 2023; year++) {
+              yearList.push(year);
+            }
+
+            var options = '';
+            $.each(yearList, function(index, value) {
+              options += '<option value="' + value + '">' + value + '</option>';
+            });
+
+            $('#carYears').html(options);
+        });
+
+        var filesArr = [];
+
+        function handleImgsFilesSelect(e) {
+            filesArr.splice(0,filesArr.length);
+            $('.carPreview').find('img').remove();
+            $('.noImage').hide();
+            $('.carPreview button').show();
+            $(".second").show();
+            $(".first").hide();
+            
+            var files = e.target.files;
+            filesArr = Array.prototype.slice.call(files);
+
+            if (filesArr.length > 3) {
+                alert("사진은 최대 3장까지 등록 가능합니다.");
+                return;
+            }
+
+            filesArr.forEach(function (f, index) {
+                if (!f.type.match("image.*")) {
+                    alert("확장자는 이미지 확장자만 가능합니다.");
+                    return;
+                }
+
+                // console.log(f);
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img_html = "<img src=\"" + e.target.result + "\" />";
+                    $(".img" + (index + 1)).append(img_html);
+                }
+                reader.readAsDataURL(f);
+            });
+        }
+
+        $(document).on('click', '.carPreview button', function () {
+            var $img = $(this).parent().find('img');
+            var index = $(this).parent().index();
+            console.log(index);
+
+            // 이미지 삭제
+            $img.remove();
+
+            // 배열에서 삭제
+            filesArr.splice(index, 1);
+            $('.carPreview').find('img').remove();
+            console.log(filesArr);
+            
+            filesArr.forEach(function (f, index) {
+                if (!f.type.match("image.*")) {
+                    alert("확장자는 이미지 확장자만 가능합니다.");
+                    return;
+                }
+
+                // console.log(f);
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img_html = "<img src=\"" + e.target.result + "\" />";
+                    $(".img" + (index + 1)).append(img_html);
+                }
+                reader.readAsDataURL(f);
+            });
+        });
+    </script>
+    <title>car register</title>
+</head>
+
+<body>
+    <header>
+        <div class="hwrap">
+            <div class="mainlogo">
+                <h1>
+                    <a href="/host/main">
+                        <img src="/img/logo ver2.png" alt="main logo ver.2">
+                        <p class="small">Host Page</p>
+                    </a>
+                </h1>
+            </div><!--mainlogo-->
+
+            <div class="profile">
+                <div class="profileImg" th:unless=${host.host_img}>
+                    <img src="/img/userlogo.png" alt="user logo ver.2">
+                </div>
+                <div class="profileImg" th:if="${host.host_img}">
+					<img th:src="${host.host_img}" alt="profile Img">
+				</div>
+            </div><!--profile-->
+        </div><!--hwrap-->
+
+        <div class="lnb-container">
+            <div class="lnbclose"></div>
+            <div class="lnb">
+            	<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+                <ul>
+                    <li><a href="/host/profile">회원정보 수정</a></li>
+                </ul>
+                <hr>
+                <ul>
+                    <li><a href="/host/login">로그아웃</a></li>
+                </ul>
+            </div>
+        </div><!--lnb-container-->
+    </header>
+
+    <form action="car_registration" method="post" class="wrap" enctype="multipart/form-data">
+        <h1>차량 등록</h1>
+        <h2>사진</h2>
+        <label for="carUpload">
+            <div class="btn first">사진 선택</div>
+            <div class="btn second">다시 선택</div>
+        </label>
+        <input type="file" name="carUpload" id="carUpload" accept="image/*" multiple>
+        <div class="carImgwrap">
+            <div class="carPreview img1">
+                <i class="fa-solid fa-images noImage"></i>
+                <button type="button"><i class="fa-sharp fa-regular fa-circle-xmark"></i></button>
+            </div><!--carPreview-->
+            <div class="carPreview img2">
+                <i class="fa-solid fa-images noImage"></i>
+                <button type="button"><i class="fa-sharp fa-regular fa-circle-xmark"></i></button>
+            </div><!--carPreview-->
+            <div class="carPreview img3">
+                <i class="fa-solid fa-images noImage"></i>
+                <button type="button"><i class="fa-sharp fa-regular fa-circle-xmark"></i></button>
+            </div><!--carPreview-->
+        </div><!--carImgwrap-->
+        
+        <h2>제조사</h2>
+        <div class="carInfowrap">
+	        <div class="brand" th:each="brand: ${brands}">
+	            <input type="radio" name="brand_id" th:value="${brand.brand_id}">
+	            <label th:text="${brand.brand_name}"></label>
+	        </div><!-- brand -->
+        </div><!-- carInfowrap -->
+        
+        <h2>차종</h2>
+        <div class="carInfowrap">
+	        <div class="carType" th:each="carType: ${carTypes}">
+	            <input type="radio" name="carType_id" th:value="${carType.carType_id}">
+	            <label th:text="${carType.carType_name}"></label>
+	        </div><!-- carType -->
+        </div><!-- carInfowrap -->
+        
+        <h2>차 모델명</h2>
+        <div class="carInfowrap">
+	        <input type="text" name="car_name">
+        </div><!-- carInfowrap -->
+        
+        <h2>연식</h2>
+        <div class="carYearwrap">
+	        <label>연도:</label>
+	        <select id="carYears" name="car_year">
+			        
+	        </select>
+        </div><!-- carYearwrap -->
+        
+        <h2>좌석</h2>
+        <div class="carYearwrap">
+	        <input type="radio" name="seat" value="3~5인승">
+	        <label>3~5인승</label>
+	        <input type="radio" name="seat" value="6인 이상">
+	        <label>6인 이상</label>
+        </div><!-- carYearwrap -->
+        
+        <h2>유종</h2>
+        <div class="carInfowrap">
+	        <div class="fuel" th:each="fuel: ${fuels}">
+	            <input type="radio" name="fuel_id" th:value="${fuel.fuel_id}">
+	            <label th:text="${fuel.fuel_name}"></label>
+	        </div><!-- fuel -->
+        </div><!-- carInfowrap -->
+        
+        <h2>특징</h2>
+        <div class="carInfowrap">
+	        <div class="feature" th:each="feature: ${features}">
+	            <input type="checkbox" name="option_value" th:value="${feature.feature_id}">
+	            <label th:text="${feature.feature_name}"></label>
+	        </div><!-- feature -->
+        </div><!-- carInfowrap -->
+        
+        <div class="submit">
+	        <input type="submit" value="등록하기">
+        </div>
+    </form><!--wrap-->
+</body>
+
+</html>

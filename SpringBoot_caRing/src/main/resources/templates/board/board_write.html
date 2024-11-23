@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/board_write.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://kit.fontawesome.com/d1fa9340d9.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+   $(function(){
+       $(".flatpickr").flatpickr({
+		   mode: "range",
+		   onChange: function(selectedDates){
+				$('#first-input').val(this.formatDate(selectedDates[0], "Y-m-d"));
+				$('#second-input').val(this.formatDate(selectedDates[1], "Y-m-d"));
+			},
+		   wrap: true
+	   });
+       
+       $('[data-clear]').click(function() {
+           $('#first-input').val('');
+           $('#second-input').val('');
+       });
+   });   
+</script>
+<script>
+   function findAddr() {
+      new daum.Postcode({
+           oncomplete: function(data) {
+                var addr = '';
+                
+                if (data.userSelectedType === 'R') { 
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }                
+                $(".address").val(addr);
+           }
+        }).open();
+      $(".address").focus();
+   }
+</script>
+
+<title>Board Write Form</title>
+</head>
+
+<body>
+   <header>
+        <div class="hwrap">
+            
+            <div class="mainlogo">
+                <h1>
+                    <a href="/host/main">
+                        <img src="/img/logo ver2.png" alt="main logo ver.2">
+                        <p class="small">Host Page</p>
+                    </a>
+                </h1>
+            </div><!--mainlogo-->
+
+            <div class="profile">
+                <div class="profileImg" th:unless=${host.host_img}>
+                    <img src="/img/userlogo.png" alt="user logo ver.2">
+                </div>
+                <div class="profileImg" th:if="${host.host_img}">
+					<img th:src="${host.host_img}" alt="profile Img">
+				</div>
+            </div><!--profile-->
+            
+        </div><!--hwrap-->
+
+        <div class="lnb-container">
+            <div class="lnbclose"></div>
+            <div class="lnb">
+            	<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+                <ul>
+                    <li><a href="/host/profile">회원정보 수정</a></li>
+                </ul>
+                <hr>
+                <ul>
+                    <li><a href="/host/login">로그아웃</a></li>
+                </ul>
+            </div>
+        </div><!--lnb-container-->
+    </header>
+
+	<form action="/board/write" method="post" th:object="${boardWriteForm}" class="wrap">
+		<h1>게시글 작성</h1>
+		<h2>보유 자동차 목록</h2>
+		<div class="carInfowrap">
+			<select name="carlist" id="carlist">
+				<option>렌트 할 차량을 골라주세요</option>
+				<option th:each="carInfo: ${carInfo}" th:text="${carInfo.car_name}"
+					th:value="${carInfo.carInfo_id}" th:field="*{carInfo_id}"></option>
+			</select>
+		</div>
+
+		<label for="findAddress"><h2>주소</h2></label><br> 
+		<div class="addresswrap">
+			<input id="submit" class="address" type="text" placeholder="차를 전달해줄 주소를 입력해주세요">
+			<button type="button" id="addressSearch" onclick="findAddr()">주소검색</button>
+			<input type="hidden" id="lat" name="lat"> 
+			<input type="hidden" id="lng" name="lng">
+		</div>
+
+		<h2>예약 가능한 날짜</h2><br>
+		<div class="carInfowrap">
+			<div class="flatpickr">
+				<input id="first-input" type="text" placeholder="날짜를 선택해주세요" data-input th:field="*{rent_start}"> 
+				<input id="second-input" type="text" placeholder="날짜를 선택해주세요" data-input th:field="*{rent_end}"> 
+				<a class="input-button" title="toggle" data-toggle> 
+				<i class="fa-solid fa-calendar-days"></i></a> 
+				<a class="input-button" title="clear" data-clear> 
+				<i class="fa-regular fa-circle-xmark"></i></a>
+			</div>
+		</div>
+		
+		<h2>추가 설명</h2><br>
+        <div class="carInfowrap">
+            <textarea rows="20" cols="100" th:field="*{board_contents}" placeholder="이용자가 전달 받아야 하는 추가적인 내용을 적어주세요!"></textarea>
+        </div>
+
+		<h2>일일 금액을 설정해주세요</h2><br> 
+      	<div class="carInfowrap">
+            <span><input type="text" 	placeholder="1,000원 단위로 적어주세요." th:field="*{price}"> / 원</span>
+        </div>
+      </div>
+
+      <div class="submit">
+         <input id="lastbutton" type="submit" value="등록하기"> 
+         <input id="lastbutton1" type="button" value="삭제하기">
+      </div>
+   </form>
+   
+   <script>
+	    $(function () {
+	        $(".lnb, .lnbclose").hide();
+	        $(".profile").click(function () {
+	            $(".lnb, .lnbclose").toggle();
+	        })
+	
+	        $('.lnbclose').click(function () {
+	            $('.lnb, .lnbclose').hide();
+	        })
+	    })
+    </script>
+</body>
+</html>

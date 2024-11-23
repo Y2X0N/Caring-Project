@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/board_list.css">
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://kit.fontawesome.com/d1fa9340d9.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
+<script>
+	$(function() {
+		$(".lnbPro, .lnbclosePro").hide();
+		$(".user").click(function() {
+			$(".lnbPro, .lnbclosePro").toggle();
+		})
+
+		$('.lnbclosePro').click(function() {
+			$('.lnbPro, .lnbclosePro').hide();
+		})
+	})
+</script>
+<script>
+   	$(function(){
+       $(".flatpickr").flatpickr({
+    	   minDate : "today",
+           mode: "range",
+           showMonths: 2,
+           onChange: function(selectedDates){
+            $('#first-input').val(this.formatDate(selectedDates[0], "Y-m-d"));
+            $('#second-input').val(this.formatDate(selectedDates[1], "Y-m-d"));
+         },
+            wrap: true
+        });
+       
+       $('[data-clear]').click(function() {
+           $('#first-input').val('');
+           $('#second-input').val('');
+       });
+     });    
+</script>
+
+<script>
+        $(function () {
+            $(".lnb, .lnbclose").hide();
+            $(".sorttoggle").click(function () {
+                $(".lnb, .lnbclose").toggle();
+                $('.lnb2, .lnbclose2').hide();
+                $('.lnb1, .lnbclose1').hide();
+            })
+
+            $('.lnbclose').click(function () {
+                $('.lnb, .lnbclose').hide();
+            })
+        })
+            
+            $(function () {
+                $(".lnb1, .lnbclose1").hide();
+            	$(".pricetoggle").click(function () {
+                	$(".lnb1, .lnbclose1").toggle(function() {
+                		$("#slider-range").slider({
+                        	range: true,
+                        	min: 10000,
+                        	max: 200000,
+                        	step: 1000,
+                        	values: [50000, 100000],
+                        	slide: function(event, ui) {
+                            	$("#amount2").val(ui.values[0] + "원" +  " - " + ui.values[1] + "원");
+                            	console.log(document.getElementById('amount2'));
+                            	$("#price1").val(ui.values[0]);
+                        		$("#price2").val(ui.values[1]);
+                        	}
+                    	});
+                    	$("#amount2").val($("#slider-range").slider("values", 0) + "원" + " - " + $("#slider-range").slider("values", 1) + "원");	
+                	});
+                	$('.lnb, .lnbclose').hide();
+                    $('.lnb2, .lnbclose2').hide();
+            	})
+
+            	$('.lnbclose1').click(function () {
+                	$('.lnb1, .lnbclose1').hide();
+            	})
+        })
+                   	
+          $(function () {
+            $(".lnb2, .lnbclose2").hide();
+            $(".filtertoggle").click(function () {
+                $(".lnb2, .lnbclose2").toggle();
+                $('.lnb, .lnbclose').hide();
+                $('.lnb1, .lnbclose1').hide();
+            })
+
+            $('.lnbclose2').click(function () {
+                $('.lnb2, .lnbclose2').hide();
+            })
+        })
+</script>
+
+
+<title>Car Search</title>
+</head>
+
+<body>
+	<header>
+		<div class="hwrap">
+			<div class="logo">
+				<h1>
+					<a href="/"> <img src="/img/logo.png" alt="caRing main logo">
+					</a>
+				</h1>
+			</div>
+			<!--logo-->
+
+			<div class="searchBar" th:object="${boardSearchForm}">
+				<form action="/board/list" class="carSearch">
+					<div class="where">
+						<label>Where</label> 
+						<input type="text" id="autocomplete" placeholder="city, airport, adress or hotel" th:value="*{location}" name="location"> 
+						<input type="hidden" name="searchedLat" th:value="*{searchedLat}" id="searchedLat"> 
+						<input type="hidden" name="searchedLng" th:value="*{searchedLng}" id="searchedLng">
+					</div>
+					<div class="flatpickr">
+						<label>When</label>
+						<input id="first-input" type="text" placeholder="날짜를 선택해주세요" data-input th:value="*{rent_start}" name="rent_start"> 
+						<input id="second-input" type="text" placeholder="날짜를 선택해주세요" data-input th:value="*{rent_end}" name="rent_end"> 
+						<button type="button" class="input-button" title="clear" data-clear> 
+							<i class="fa-regular fa-circle-xmark"></i>
+						</button>
+					</div>
+					<div class="searchbt">
+						<button>
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</button>
+					</div>
+				</form>
+			</div><!-- searchBar -->
+
+			<div class="user">
+				<a href="#"> <img src="/img/icons8-menu-64.png"
+					alt="user menu logo"> <span class="profileImg"
+					th:unless="${session.loginCustomer}"> <img
+						src="/img/icons8-user-48.png" alt="user logo">
+				</span> <span class="profileImg" th:if="${session.loginCustomer}"> <img
+						src="https://img.icons8.com/ios-filled/50/6e7a77/car-roof-box.png"
+						alt="car-roof-box" />
+				</span>
+				</a>
+			</div>
+			<!--user-->
+		</div>
+		<div class="lnb-containerPro">
+			<div class="lnbclosePro"></div>
+			<div class="lnbPro">
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/profile">회원정보 수정</a></li>
+					<li><a href="/reservation/reservationlist">예약 내역 조회</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+				<ul th:unless=${session.loginCustomer}>
+					<li><a href="/customer/login">USER 로그인 / 회원가입</a></li>
+					<li><a href="/host/login">HOST 로그인 / 회원가입</a></li>
+				</ul>
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/logout">로그아웃</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	<div class="serachFilterBar">
+		<div class="searchFilter">
+			<button class="sorttoggle" type="button">
+				<span>정렬</span>
+			</button>
+			<div class="lnb-container">
+				<div class="lnbclose"></div>
+				<div class="lnb">
+					<input type="hidden" name="searchedLat" value="35.123" id="searchedLng">
+					<button
+						onclick="location.href='/board/list/priceasc?location=' + document.getElementById('autocomplete').value + '&searchedLat=' + document.getElementById('searchedLat').value + '&searchedLng=' + document.getElementById('searchedLng').value + '&rent_start=' + document.getElementById('first-input').value + '&rent_end=' + document.getElementById('second-input').value"
+						value="낮은가격순">낮은가격순</button>
+					<br>
+					<button
+						onclick="location.href='/board/list/pricedesc?location=' + document.getElementById('autocomplete').value + '&searchedLat=' + document.getElementById('searchedLat').value + '&searchedLng=' + document.getElementById('searchedLng').value + '&rent_start=' + document.getElementById('first-input').value + '&rent_end=' + document.getElementById('second-input').value"
+						value="높은가격순">높은가격순</button>
+					<br>
+					<button
+						onclick="location.href='/board/list/distance?location=' + document.getElementById('autocomplete').value + '&searchedLat=' + document.getElementById('searchedLat').value + '&searchedLng=' + document.getElementById('searchedLng').value + '&rent_start=' + document.getElementById('first-input').value + '&rent_end=' + document.getElementById('second-input').value"
+						value="거리순">거리순</button>
+				</div>
+			</div>
+		</div><!-- searchFilter -->
+		<div class="searchFilter">
+			<button class="pricetoggle" type="button">
+				<span>가격</span>
+			</button>
+			<div class="lnb-container">
+				<div class="lnbclose1"></div>
+				<div class="lnb1">
+					<p>
+						<input type="text" id="amount2"> <input type="hidden" id="price1"> <input type="hidden" id="price2">
+					</p>
+					<div id="slider-range"></div>
+					<button
+						onclick="location.href='/board/list/pricerange?location=' + document.getElementById('autocomplete').value + '&searchedLat=' + document.getElementById('searchedLat').value + '&searchedLng=' + document.getElementById('searchedLng').value + '&rent_start=' + document.getElementById('first-input').value + '&rent_end=' + document.getElementById('second-input').value + '&minPrice=' + document.getElementById('price1').value + '&maxPrice=' + document.getElementById('price2').value"
+						value="가격">적용하기</button>
+					<br>
+				</div>
+			</div>
+		</div><!-- searchFilter -->
+		<div class="searchFilter">
+			<button class="filtertoggle" type="button">
+				<span>필터</span>
+			</button>
+			<div class="lnb-container">
+				<div class="lnbclose2"></div>
+				<div class="lnb2">
+					<form action="/board/list/filter">
+						<h3>제조사</h3>
+						<div class="carInfowrap">
+							<div class="brand" th:each="brand: ${brands}">
+								<input type="checkbox" id="brand_id" name="brand_id" th:value="${brand.brand_id}">
+								<label th:text="${brand.brand_name}"></label>
+							</div>
+							<!-- brand -->
+						</div>
+						<!-- carInfowrap -->
+
+						<h3>차종</h3>
+						<div class="carInfowrap">
+							<div class="carType" th:each="carType: ${carTypes}">
+								<input type="checkbox" name="carType_id" th:value="${carType.carType_id}">
+								<label th:text="${carType.carType_name}"></label>
+							</div>
+							<!-- carType -->
+						</div>
+						<!-- carInfowrap -->
+
+						<h3>좌석</h3>
+						<div class="carInfowrap seat">
+							<input type="checkbox" name="seat" value="3~5인승">
+							<label>3~5인승</label>
+							<input type="checkbox" name="seat" value="6인 이상">
+							<label>6인 이상</label>
+						</div>
+						<!-- carYearwrap -->
+
+						<h3>유종</h3>
+						<div class="carInfowrap">
+							<div class="fuel" th:each="fuel: ${fuels}">
+								<input type="checkbox" name="fuel_id" th:value="${fuel.fuel_id}">
+								<label th:text="${fuel.fuel_name}"></label>
+							</div>
+							<!-- fuel -->
+						</div>
+						<!-- carInfowrap -->
+
+						<h3>특징</h3>
+						<div class="carInfowrap">
+							<div class="feature" th:each="feature: ${features}">
+								<input type="checkbox" name="option_value" th:value="${feature.feature_id}">
+								<label th:text="${feature.feature_name}"></label>
+							</div>
+							<!-- feature -->
+						</div>
+						<!-- carInfowrap -->
+						<input type="hidden" name="searchedLat" th:value="${boardSearchForm.searchedLat}" id="searchedLat">
+						<input type="hidden" name="searchedLng" th:value="${boardSearchForm.searchedLng}" id="searchedLng">
+						<input type="hidden" th:value="${boardSearchForm.rent_start}" name="rent_start"> 
+						<input type="hidden" th:value="${boardSearchForm.rent_end}" name="rent_end"> 
+						<input type="hidden" th:value="${boardSearchForm.location}" name="location"> 
+						<input type="submit" value="적용하기">
+					</form>
+				</div>
+			</div>
+		</div><!-- searchFilter -->
+	</div>
+	<div class="carwrap">
+		<div th:unless="${boardDTOs}">
+			<h1>
+				<img src="/img/not-found.png" style="size: 300px;">
+			</h1>
+			<h2>찾으시는 결과가 없습니다</h2>
+		</div>
+		
+		<div class="boardWrap">
+
+			<th:block th:each="boardDTO: ${boardDTOs}">
+				<div class="car">
+					<a th:href="@{/board/read(board_id=${boardDTO.board.board_id}, rent_start=${boardSearchForm.rent_start}, rent_end=${boardSearchForm.rent_end})}">
+						<div class="img">
+							<img th:src="${boardDTO.car.thumbnail}" alt="car list 1" name="picture">
+						</div>
+						<div class="carInfo">
+							<p class="carName" th:text="*{boardDTO.board.title}"></p>
+							<div class="carDetail">
+								<p>★<span th:text="*{boardDTO.board.rate}" th:if="*{boardDTO.board.rate}"></span>
+									<span th:unless="*{boardDTO.board.rate}">no review</span>
+								</p>
+								<p>
+									<span class="won">\ </span> 
+									<span th:text="*{boardDTO.board.price}"></span>/ 1-day
+								</p>
+								<input name="lat" type="hidden" th:value="*{boardDTO.board.lat}">
+								<input name="lng" type="hidden" th:value="*{boardDTO.board.lng}">
+								<input name="price" type="hidden"
+									th:value="*{boardDTO.board.price}"> <input name="title"
+									type="hidden" th:value="*{boardDTO.board.title}">
+							</div>
+							<!-- carDetail -->
+						</div>
+					</a>
+				</div>
+			</th:block>
+		</div>
+
+		<script th:inline="javascript">
+	var boardDTO = [[${boardDTOs}]];
+	var array = Array.from(boardDTO);
+	var rent_start = [[${boardSearchForm.rent_start}]];
+	var rent_end = [[${boardSearchForm.rent_end}]];
+	var map;
+	var searchedLat = document.getElementById("searchedLat").value
+	var searchedLng = document.getElementById("searchedLng").value
+		function myMap() {
+				map = new google.maps.Map(document.getElementById('googleMap'), {
+				center : new google.maps.LatLng(searchedLat, searchedLng),
+				zoom : 12,
+				styles : [
+					  {
+						    "featureType": "administrative",
+						    "elementType": "geometry",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  },
+						  {
+						    "featureType": "poi",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  },
+						  {
+						    "featureType": "road",
+						    "elementType": "labels.icon",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  },
+						  {
+						    "featureType": "transit",
+						    "stylers": [
+						      {
+						        "visibility": "off"
+						      }
+						    ]
+						  }
+						]
+				
+				});
+				
+				
+ 				var input = document.getElementById('autocomplete');
+				var searchBox = new google.maps.places.SearchBox(input);
+				var currentInfowindow = null;
+				
+				input.addEventListener('keydown', function(event) {
+		              if (event.key === 'Enter') {
+		                event.preventDefault();
+		                var predictions = searchBox.getPlaces();
+		                if (predictions && predictions.length > 0) {
+		                  var firstPrediction = predictions[0];
+		                  input.value = firstPrediction.formatted_address;
+		                }
+		              }
+		            });
+		        
+		        for(i = 0; i < document.getElementsByName('lat').length; i++) {
+	        		const lat = document.getElementsByName('lat')[i].value;
+	            	const lng = document.getElementsByName('lng')[i].value;
+	            	var price = document.getElementsByName('price')[i].value;
+	                var title = document.getElementsByName('title')[i].value;
+	                var picture = array[i].car.thumbnail;
+	                const board_id = array[i].board.board_id;
+	                const rate = array[i].board.rate;
+	                const rateText = rate == null ? "no review" : rate + .0;
+	                
+	                const detail =
+	                       '<div id="detailBox">' +
+	                          '<div id="detailPhoto">' +
+	                          '<a href="/board/read?board_id=' + board_id + '&rent_start=' + rent_start +'&rent_end=' + rent_end + '">' +
+	                          '<img src="' + picture + '">' +
+	                           '</a>' +
+	                          '</div>'   +
+	                      
+	                       '<div id="detailContent">' +
+	                          '<p>' + title + '</p>' +
+	                          '<p>★' + rateText + '</p>' +
+	                       '</div>' +
+	                          '<p class="price">' + "1 - Day: " + price + '원</p>' +
+	                       '</div>';
+	                       
+					var marker = new google.maps.Marker({
+					position : new google.maps.LatLng(lat, lng),
+					map : map
+					});
+					
+					const infowindow = new google.maps.InfoWindow({
+						  content: '<div>' + detail + '</div>',
+		                  maxWidth: 300,
+		                  maxHeight: 200,
+		               });
+					
+					 marker.addListener("click", (function(infowindow, marker) {
+						 return function() {
+					            if (currentInfowindow) {
+					                currentInfowindow.close();
+					            }
+
+					            infowindow.open(map, marker);
+					            currentInfowindow = infowindow;
+					        };
+					    })(infowindow, marker));
+				
+				}
+
+		        var geocoder = new google.maps.Geocoder();
+				findLatLng(geocoder);
+		}
+			
+		function findLatLng(geocoder) {
+			$("#autocomplete").change(function (){
+		        geocodeAddress(geocoder);
+		   	});
+		}	
+		
+		function geocodeAddress(geocoder) {	
+			var address = document.getElementById('autocomplete').value;
+			geocoder.geocode({'address' : address}, function(result, status) {
+				const lat = result[0].geometry.location.lat();
+				const lng = result[0].geometry.location.lng();
+								
+				document.getElementById("searchedLat").value = lat;
+				document.getElementById("searchedLng").value = lng;
+			});
+		};
+		
+</script>
+		<div id="googleMap"></div>
+		<script
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCohcEtokIbEDDmWarMHZTTWAW8sffjywM&libraries=places&callback=myMap"
+			async defer></script>
+	</div>
+</body>
+</html>

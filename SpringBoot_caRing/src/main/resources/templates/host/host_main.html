@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/host_main.css">
+<script src="https://kit.fontawesome.com/d1fa9340d9.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script th:inline="javascript">
+       let remove = [[${remove}]];
+       console.log(remove);
+       if (remove) alert("예약 내역이 있음");
+       
+       $(function () {
+           $(".lnb, .lnbclose").hide();
+           $(".profile").click(function () {
+               $(".lnb, .lnbclose").toggle();
+           })
+   
+           $('.lnbclose').click(function () {
+               $('.lnb, .lnbclose').hide();
+           })
+           
+           
+           $('.resDate').each(function() {
+            var status = $(this).find('.status').val();
+            var statusText = $(this).find('.status-text');
+            switch (status) {
+            case "1":
+               statusText.text("요청");
+               break;
+            case "2":
+               statusText.text("확정");
+               break;
+            case "3":
+               statusText.text("완료");
+               break;
+            case "4":
+               statusText.text("리뷰 작성 완료");
+               break;
+            case "5":
+				statusText.text("예약 거절");
+				break;
+            }
+         });
+           
+           
+           if (message === 'reservation_exist') {
+               alert('게시글에 해당하는 예약이 존재합니다.');
+           }
+       })
+    </script>
+<title>Host Main</title>
+</head>
+
+<body>
+	<header>
+		<div class="hwrap">
+			<div class="mainlogo">
+				<h1>
+					<a href="/host/main"> <img src="/img/logo ver2.png"
+						alt="main logo ver.2">
+						<p>Host Page</p>
+					</a>
+				</h1>
+			</div>
+			<!--mainlogo-->
+
+			<div class="profile">
+				<div class="profileImg" th:unless=${host.host_img}>
+					<img src="/img/userlogo.png" alt="user logo ver.2">
+				</div>
+				<div class="profileImg" th:if="${host.host_img}">
+					<img th:src="${host.host_img}" alt="profile Img">
+				</div>
+			</div>
+			<!--profile-->
+		</div>
+		<!--hwrap-->
+
+		<div class="lnb-container">
+			<div class="lnbclose"></div>
+			<div class="lnb">
+				<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="/host/profile">회원정보 수정</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="/host/login">로그아웃</a></li>
+				</ul>
+			</div>
+		</div>
+		<!--lnb-container-->
+	</header>
+
+	<div class="mainwrap">
+		<div class="carList list">
+			<div class="title">
+				<h2>Car List</h2>
+				<a href="/board/car_registration">+</a>
+			</div>
+
+			<div class="detailwrap">
+				<div class="car" th:each="car: ${cars}">
+					<div class="carwrap">
+						<div class="img">
+							<a href="#"> <img th:src="${car.thumbnail}" alt="car photo1">
+							</a>
+						</div>
+						<!--carImg-->
+
+						<div class="carInfo">
+							<div class="carName">
+								<h3 th:text="${car.car_name}"></h3>
+							</div>
+							<div class="carBt">
+								<form
+									th:action="@{/board/deleteByCarId(carInfo_id=${car.carInfo_id})}"
+									method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+									<input type="submit" value="삭제" class="delete">
+								</form>
+							</div>
+							<!--button-->
+						</div>
+						<!--carInfo-->
+					</div>
+					<!--carwrap-->
+				</div>
+				<!--car-->
+
+			</div>
+			<!--detailwrap-->
+		</div>
+		<!--carList-->
+
+
+		<div class="boardList list">
+			<div class="title">
+				<h2>Board List</h2>
+				<a href="/board/write">+</a>
+			</div>
+
+			<div class="detailwrap">
+				<div class="car" th:each="boardDTO: ${boardDTOs}">
+					<div class="carwrap">
+						<div class="img">
+							<a th:href="@{/board/read(board_id=${boardDTO.board.board_id})}"
+								target="_blank"> <img th:src="${boardDTO.car.thumbnail}"
+								alt="reservation car photo1">
+							</a>
+						</div>
+						<!--carImg-->
+
+						<div class="carInfo boardInfo">
+							<div class="boardName">
+								<a th:href="@{/board/read(board_id=${boardDTO.board.board_id})}"
+									target="_blank">
+									<h3 th:text="${boardDTO.board.title}"></h3>
+								</a>
+							</div>
+							<div class="carBt boardBt">
+								<p class="won">
+									<span th:text="*{boardDTO.board.price}"></span>/일
+								</p>
+								<form
+									th:action="@{/board/deleteByBoardId(board_id=*{boardDTO.board.board_id})}"
+									method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')">
+									<input type="submit" value="삭제" class="delete">
+								</form>
+							</div>
+							<!--button-->
+						</div>
+						<!--carInfo-->
+					</div>
+					<!--carwrap-->
+				</div>
+				<!--car-->
+
+			</div>
+			<!--detailwrap-->
+		</div>
+		<!--carList-->
+
+
+		<div class="resList list">
+			<div class="title">
+				<h2>Reservation List</h2>
+				<a href="#"></a>
+			</div>
+
+			<div class="detailwrap">
+				<div class="res" th:each="reservationDTO: ${reservationDTOs}">
+					<div class="reswrap">
+						<div class="img">
+							<a
+								th:href="@{/host/reservation(reservation_id=${reservationDTO.reservation.reservation_id})}">
+								<img th:src="${reservationDTO.boardDTO.car.thumbnail}"
+								alt="reservation car photo1">
+							</a>
+						</div>
+						<!--carImg-->
+
+						<div class="resInfo">
+							<div class="resTitle">
+								<a
+									th:href="@{/host/reservation(reservation_id=${reservationDTO.reservation.reservation_id})}">
+									<h3 th:text="${reservationDTO.boardDTO.board.title}"></h3>
+								</a>
+							</div>
+							<div class="resProfile">
+								<div class="resDate">
+									<p>
+										<span class="start"
+											th:text="${reservationDTO.reservation.rent_start}"></span> ~
+										<span class="end"
+											th:text="${reservationDTO.reservation.rent_end}"></span>
+									</p>
+									<br>
+									<p>
+										예약 상태: <input type="hidden" class="status"
+											th:value="${reservationDTO.reservation.status}"> <span
+											class="status-text"></span>
+									</p>
+								</div>
+							</div>
+							<!--resProfile-->
+						</div>
+						<!--resInfo-->
+					</div>
+					<!--reswrap-->
+				</div>
+				<!--res-->
+			</div>
+		</div>
+		<!--resList-->
+
+	</div>
+	<!--mainwrap-->
+
+</body>
+
+</html>

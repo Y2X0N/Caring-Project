@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/board_read.css">
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script src="https://kit.fontawesome.com/d1fa9340d9.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<title>car_detail</title>
+</head>
+<body>
+	<header>
+		<div class="hwrap">
+			<div class="logo">
+				<h1>
+					<a href="/"> <img src="/img/logo.png" alt="caRing main logo">
+					</a>
+				</h1>
+			</div>
+			<!--logo-->
+
+			<div class="user">
+				<a href="#"> <img src="/img/icons8-menu-64.png"
+					alt="user menu logo"> <span class="profileImg"
+					th:unless="${session.loginCustomer}"> <img
+						src="/img/icons8-user-48.png" alt="user logo">
+				</span> <span class="profileImg" th:if="${session.loginCustomer}"> <img
+						src="https://img.icons8.com/ios-filled/50/6e7a77/car-roof-box.png"
+						alt="car-roof-box" />
+				</span>
+				</a>
+			</div>
+			<!--user-->
+			<!--user-->
+		</div>
+		<!--hwrap-->
+
+		<div class="lnb-container">
+			<div class="lnbclose"></div>
+			<div class="lnb">
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/profile">회원정보 수정</a></li>
+					<li><a href="/reservation/reservationlist">예약 내역 조회</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+				<ul th:unless=${session.loginCustomer}>
+					<li><a href="/customer/login">USER 로그인 / 회원가입</a></li>
+					<li><a href="/host/login">HOST 로그인 / 회원가입</a></li>
+				</ul>
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/logout">로그아웃</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+	<div class="imgwrap">
+		<button class="btnleft">
+			<i class="fa-solid fa-angles-left"></i>
+		</button>
+		<div class="slide">
+			<div class="imgitem" th:each="path: ${paths}">
+				<img th:src="${path}" alt="car photo1">
+			</div>
+		</div>
+		<!--slide-->
+		<button class="btnright">
+			<i class="fa-solid fa-angles-right"></i>
+		</button>
+	</div>
+
+	<div class="mainwrap">
+		<div class="carwrap">
+			<!--  <form action="#" class="calendar"> -->
+			<form th:action="@{/reservation/reservation}" class="calendar">
+				<input type="hidden" name="price" th:field="${board.price}">
+				<input type="hidden" name="board_id" th:field="${board.board_id}">
+				<input type="hidden" name="carInfo_id" th:field="${car.carInfo_id}">
+
+				<div class="flatpickr">
+
+					<input name="rent_start" id="first-input" type="text"
+						placeholder="날짜를 선택해주세요" data-input> <input
+						name="rent_end" id="second-input" type="text"
+						placehWlder="날짜를 선택해주세요" data-input readonly> <a
+						class="input-button" title="clear" data-clear> <i
+						class="fa-regular fa-circle-xmark"></i>
+					</a>
+
+				</div>
+				<!-- flatpickr -->
+
+				<p>
+					<span class="price">₩</span><span th:text="${board.price}"
+						class="price"></span>/일
+				</p>
+				<input type="submit" value="예약하기" class="submit"> <span
+					class="hr"></span>
+				<div class="cancel">
+					<div class="cancelWrap">
+						<div>
+							<img width="64" height="64"
+								src="https://img.icons8.com/pastel-glyph/64/6e7a77/thumb-up--v2.png"
+								alt="thumb-up--v2" />
+						</div>
+						<div class="cancelText">
+							<p class="cancelP">무료 취소</p>
+							<p class="cancelSpan">예약 시작 이틀전 오전 10시 이전 전액 환불</p>
+						</div>
+					</div>
+					<!-- cancelWrap -->
+				</div>
+				<!-- cancel -->
+				<span class="hr"></span>
+				<p class="insurance">보험 및 보호</p>
+				<p>
+					여행자를 통한 보험 <span><i class="fa-regular fa-circle-check"></i></span>
+				</p>
+			</form>
+			<div class="carInfo">
+
+				<h3 class="titleh3" th:text="${board.title}"></h3>
+
+				<div class="infowrap">
+
+					<div class="carType info">
+						<p class="carTypeP" th:text="${carType.carType_name}"></p>
+						<input type="hidden" name="carType"
+							th:value="${carType.carType_id}">
+					</div>
+					<!--fuel-->
+
+					<div class="fuel info">
+						<p class="fuelP" th:text="${fuel.fuel_name}"></p>
+						<input type="hidden" name="fuel" th:value="${fuel.fuel_id}">
+					</div>
+					<!--fuel-->
+
+					<div class="seat info">
+						<p th:text="${car.seat}"></p>
+					</div>
+					<!--seat-->
+
+				</div>
+				<!--infowrap-->
+				<h3 class="featureh3">car feature</h3>
+				<div class="featurewrap">
+					<div class="feature" th:if="${option.contains('1')}">
+						<img
+							src="https://img.icons8.com/ios-filled/100/6e7a77/east-direction.png" />
+						<p>네비게이션</p>
+					</div>
+					<!--feature-->
+					<div class="feature" th:if="${option.contains('2')}">
+						<img
+							src="https://img.icons8.com/ios-filled/100/6e7a77/bluetooth.png" />
+						<p>블루투스</p>
+					</div>
+					<!--feature-->
+					<div class="feature" th:if="${option.contains('3')}">
+						<img
+							src="https://img.icons8.com/ios-filled/100/6e7a77/baby-car-seat.png" />
+						<p>베이비 카시트</p>
+					</div>
+					<!--feature-->
+					<div class="feature" th:if="${option.contains('4')}">
+						<img
+							src="https://img.icons8.com/ios-filled/100/6e7a77/smoking.png" />
+						<p>흡연 가능</p>
+					</div>
+					<!--feature-->
+					<div class="feature" th:if="${option.contains('5')}">
+						<img
+							src="https://img.icons8.com/sf-black-filled/64/6e7a77/dog.png" />
+						<p>반려동물 가능</p>
+					</div>
+					<!--feature-->
+					<div class="feature" th:if="${option.contains('6')}">
+						<img
+							src="https://img.icons8.com/ios-filled/100/6e7a77/gear-stick.png" />
+						<p>수동</p>
+					</div>
+					<!--feature-->
+				</div>
+				<!--featurewrap-->
+			</div>
+			<!--carInfo-->
+		</div>
+		<!--carwrap-->
+
+		<div class="explanation">
+			<h3>차 설명</h3>
+			<p th:text="${board.board_contents}">설명입니다</p>
+		</div>
+		<!--explanation-->
+
+		<div class="hostInfo">
+			<div class="hostProfile">
+				<img th:src="${host.host_img}" th:if="${host.host_img}">
+				<img src="/img/userlogo-green.png" alt="customer img" th:unless="${host.host_img}">
+			</div>
+			<p th:text="${host.host_name}"></p>
+			<div class="rate">
+				<input type="hidden" id="rate" th:value="${rate}">
+				<span class="rateStar"></span>
+			</div>
+		</div>
+		<!--hostInfo-->
+
+		<div class="reviewrap" th:each="reviewDTO: ${reviewDTO}" th:object="${reviewDTO}">
+			<div class="customer" >
+				<div class="customerImg">
+					<img th:src="*{customer.customer_img}" th:if="*{customer.customer_img}">
+					<img src="/img/userlogo-green.png" alt="customer img" th:unless="*{customer.customer_img}">
+				</div><!-- customerImg -->
+				<p th:text="*{customer.customer_name}"></p>
+			</div>
+			
+			
+			<div class="review"> 
+				<div class="rate boardRate">
+					<input type="hidden" id="rate" th:value="*{review.rate}">
+					<span class="rateStar smallStar"></span>
+				</div>
+				<p th:text="*{review.review_contents}"></p>
+			</div>
+
+		</div>
+	</div>
+	<!--mainwrap-->
+
+
+
+	<script th:inline="javascript">
+	
+		var queryString = window.location.search;
+		var params = new URLSearchParams(queryString);
+		var rentStart = params.get('rent_start');
+		var rentEnd = params.get('rent_end');
+		var defaultDates = [rentStart, rentEnd];
+		
+		
+		   	$(function(){
+		   	    var disabledDates = [];
+		   		var reservationChecks = [[${reservationChecks}]];
+		   		var array = Array.from(reservationChecks);
+		   		for (var i = 0; i < array.length; i++) {
+		   			var rent_start = array[i].rent_start;
+		   			var rent_end = array[i].rent_end;
+		   			disabledDates.push({
+		   	         from: rent_start,
+		   	         to: rent_end
+		   	      });
+		   		}
+		   		var start = $('#first-input').val();
+		   		var end = $('#second-input').val();
+		       $(".flatpickr").flatpickr({
+		    	   minDate : "today",
+		           mode: "range",
+			       defaultDate: defaultDates,
+		           showMonths: 2,
+		           onChange: function(selectedDates){
+		            $('#first-input').val(this.formatDate(selectedDates[0], "Y-m-d"));
+		            $('#second-input').val(this.formatDate(selectedDates[1], "Y-m-d"));
+		         },
+		            wrap: true,
+		            disable: disabledDates
+		        });
+		       
+		       $('[data-clear]').click(function() {
+		           $('#first-input').val('');
+		           $('#second-input').val('');
+		       });
+		   	});
+	</script>
+	<script>
+		$(function() {
+			$(".lnb, .lnbclose").hide();
+			$(".user").click(function() {
+				$(".lnb, .lnbclose").toggle();
+			})
+	
+			$('.lnbclose').click(function() {
+				$('.lnb, .lnbclose').hide();
+			})
+			
+			
+			$('#first-input').val(rentStart);
+				$('#second-input').val(rentEnd);
+				
+				if ($('.featurewrap').children().length > 4) {
+					$('.featurewrap').addClass('feature5');
+					$('.feature').addClass('featurePlus');
+				}
+				if ($('.featurewrap').children().length == 5
+						|| $('.featurewrap').children().length == 2) {
+					$('.featurewrap').append(
+							'<div class="featurePlus"></div>');
+				}
+	
+				// 모델에서 전달된 값을 읽어옵니다.
+				var carType = $('input[name=carType]').val();
+	
+				// switch-case 문을 사용하여 적절한 img 태그를 추가합니다.
+				switch (carType) {
+				case "1":
+					$(".carTypeP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/suv-2.png"/><br>');
+					break;
+				case "2":
+					$(".carTypeP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/truck.png"/><br>');
+					break;
+				case "3":
+					$(".carTypeP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/sedan.png"/><br>');
+					break;
+				case "4":
+					$(".carTypeP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/van.png"/><br>');
+					break;
+				case "5":
+					$(".carTypeP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/convertible.png"/><br>');
+					break;
+				case "6":
+					$(".carTypeP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/fiat-500.png"/><br>');
+					break;
+				default:
+					// 적절한 img 태그를 추가하지 않을 경우, 기본 img 태그를 추가합니다.
+					$(".carTypeP").prepend('<p>no image</p>');
+					break;
+				}
+	
+				var fuel = $('input[name=fuel]').val();
+	
+				// switch-case 문을 사용하여 적절한 img 태그를 추가합니다.
+				switch (fuel) {
+				case "1":
+					$(".fuelP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/petrol.png"/><br>');
+					break;
+				case "2":
+					$(".fuelP")
+							.prepend(
+									'<img src="https://img.icons8.com/external-kiranshastry-solid-kiranshastry/64/6e7a77/external-petrol-outdoor-kiranshastry-solid-kiranshastry.png"/><br>');
+					break;
+				case "3":
+					$(".fuelP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/hybrid.png"/><br>');
+					break;
+				case "4":
+					$(".fuelP")
+							.prepend(
+									'<img src="https://img.icons8.com/ios-filled/100/6e7a77/electric-vehicle.png"/><br>');
+					break;
+				default:
+					// 적절한 img 태그를 추가하지 않을 경우, 기본 img 태그를 추가합니다.
+					$(".fuelP").prepend('<p>no image</p>');
+					break;
+				}
+				
+				$('.slide').slick({
+					infinite : true,
+					prevArrow : '.btnleft',
+					nextArrow : '.btnright'
+				});
+				
+				$('.rate').each(function() {
+		            var rate = $(this).find('#rate').val();
+		            var rateText = $(this).find('.rateStar');
+		            switch (rate) {
+		            case "1":
+		               rateText.text("★☆☆☆☆");
+		               break;
+		            case "2":
+		               rateText.text("★★☆☆☆");
+		               break;
+		            case "3":
+		               rateText.text("★★★☆☆");
+		               break;
+		            case "4":
+		               rateText.text("★★★★☆");
+		               break;
+		            case "5":
+		               rateText.text("★★★★★");
+		               break;
+		            }
+			});
+		});
+		
+	</script>
+
+</body>
+
+</html>

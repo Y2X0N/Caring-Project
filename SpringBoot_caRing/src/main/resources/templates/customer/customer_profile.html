@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @font-face {
+            font-family: 'ocr';
+            src: url('/font/OCR-B\ 10\ BT.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Pretendard-Regular';
+            src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            unicode-range: U+AC00-D7A3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: inherit;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            vertical-align: top;
+        }
+
+        button {
+            border: none;
+            background-color: transparent;
+            color: #dbcba0;
+        }
+
+        body, input {
+            font-family: 'ocr', 'Pretendard-Regular';
+            color: #6e7a77;
+        }
+
+        header {
+		    position: relative;
+		    background-color: white;
+		    border-bottom: 3px solid #6e7a77;
+		}
+		
+		.hwrap {
+		    height: 70px;
+		    display: flex;
+		    align-items: center;
+		}
+		
+		.logo {
+		    position: absolute;
+		    left: 20px;
+		}
+		
+		.userwrap {
+		    position: absolute;
+		    right: 20px;
+		}
+		
+		.user {
+		    position: absolute;
+		    right: 20px;
+		}
+		
+		.user img {
+		    width: 35px;
+		}
+		
+		.lnb-container {
+		    position: relative;
+		}
+		
+		.lnb {
+		    width: 400px;
+		    background-color: white;
+		    border-radius: 30px;
+		    position: absolute;
+		    top: -10px;
+		    right: 20px;
+		    border: 3px solid #6e7a77;
+		    font-weight: 700;
+		    color: #6e7a77;
+		}
+		
+		.lnb ul {
+		    margin-left: 15px;
+		    padding: 27px;
+		    padding-bottom: 0;
+		}
+		
+		.lnb ul li {
+		    margin-bottom: 27px;
+		}
+		
+		.lnb span {
+		    display: block;
+		    width: 300px;
+		    height: 3px;
+		}
+		.lnbclose {
+		    background-color: transparent;
+		    width: 100%;
+		    height: 100%;
+		    position: fixed;
+		    top: 0;
+		    left: 0;
+		}
+		
+		hr {
+		    width: 350px;
+		    margin-left: 22px;
+		}
+
+        form {
+            width: 800px;
+            height: 800px;
+            margin: 0px auto;
+            background-color: white;
+            box-shadow: 5px 10px 20px grey;
+            border-radius: 5% 5%;
+        }
+
+        h2 {
+            margin-top: 30px;
+            padding-top: 10px;
+            padding-left: 50px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 4px -4px grey;
+            padding-bottom: 10px;
+        }
+
+        .customerImg {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .customerImg Img {
+            width: 100%;
+        }
+
+        .customerImgwrap {
+            width: 300px;
+            height: 300px;
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .customerImgwrap #Imgfile {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+
+        .infowrap {
+            margin-left: 45px;
+            display: flex;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .label {
+            width: 300px;
+        }
+
+        .input {
+            width: 500px;
+        }
+
+        #customername {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .username {
+            margin: 30px auto;
+            width: fit-content;
+        }
+
+        #info {
+            text-align: center;
+        }
+
+        .btwrap {
+            margin: 30px auto;
+            width: fit-content;
+            /* padding-top: 1em; */
+            margin-top: 5px;
+        }
+
+        .btwrap input {
+            margin: 35px;
+            width: 200px;
+            height: 50px;
+            border-radius: 15px;
+            background-color: #6e7a77;
+            box-shadow: 3px 3px 3px grey;
+            transition-duration: 0.3s;
+            color: white;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/d1fa9340d9.js" crossorigin="anonymous"></script>
+    <title>User MyPage</title>
+</head>
+
+<body>
+    <header>
+		<div class="hwrap">
+			<div class="logo">
+				<h1>
+					<a href="/"> <img src="/img/logo.png" alt="caRing main logo">
+					</a>
+				</h1>
+			</div><!--logo-->
+
+			<div class="user">
+				<a href="#"> 
+					<img src="/img/icons8-menu-64.png" alt="user menu logo"> 
+
+					<span class="profileImg" th:unless="${session.loginCustomer}">
+						<img src="/img/icons8-user-48.png" alt="user logo">
+					</span>
+					<span class="profileImg" th:if="${session.loginCustomer}">
+						<img src="https://img.icons8.com/ios-filled/50/6e7a77/car-roof-box.png" alt="car-roof-box"/>
+					</span>
+				</a>
+			</div><!--user-->
+			<!--user-->
+		</div>
+		<!--hwrap-->
+
+		<div class="lnb-container">
+			<div class="lnbclose"></div>
+			<div class="lnb">
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/profile">회원정보 수정</a></li>
+					<li><a href="/reservation/reservationlist">예약 내역 조회</a></li>
+				</ul>
+				<hr>
+				<ul>
+					<li><a href="#">고객센터</a></li>
+				</ul>
+				<hr>
+				<ul th:unless=${session.loginCustomer}>
+					<li><a href="/customer/login">USER 로그인 / 회원가입</a></li>
+					<li><a href="/host/login">HOST 로그인 / 회원가입</a></li>
+				</ul>
+				<ul th:if=${session.loginCustomer}>
+					<li><a href="/customer/logout">로그아웃</a></li>
+				</ul>
+			</div>
+		</div>
+	</header>
+
+    <form th:object="${customer}" method="post" id="customerForm" enctype="multipart/form-data">
+		<h2>프로필 편집</h2>
+		<div class="customerImgwrap">
+			<div class="customerImg" >
+				<img th:src="*{customer_img}" th:if="*{customer_img}">
+				<img src="/img/userlogo-green.png" alt="customer img" th:unless="*{customer_img}">
+			</div>
+			<!--customerImg-->
+			<!--customerImg-->
+			<input type="file" name="img" id="Imgfile">
+		</div>
+		<!--customerImgwrap-->
+
+		<div class="username">
+			<input type="text" id="customername" name="customer_name" th:value="*{customer_name}">
+		</div>
+
+		<div class="infowrap">
+			<div class="label">
+				<label>email</label>
+			</div>
+			<div class="input">
+				<p th:text="*{customer_email}"></p>
+				<input type="hidden" name="customer_email" th:value="*{customer_email}">
+			</div>
+		</div>
+
+		<div class="infowrap">
+			<div class="label">
+				<label>password</label>
+			</div>
+			<div class="input">
+				<input type="password" class="info" name="customer_password" id="customer_password" th:value="*{customer_password}">
+			</div>
+		</div>
+
+		<div class="infowrap">
+			<div class="label">
+				<label>phone number</label>
+			</div>
+			<div class="input">
+				<input type="text" class="info" name="customer_phone" id="customer_phone" th:value="*{customer_phone}">
+			</div>
+		</div>
+
+        <div class="infowrap">
+           <div class="label">
+				<label>license</label>
+			</div>
+			<div class="input">
+				<p th:text="*{license}"></p>
+				<input type="hidden" name="license" th:value="*{license}">
+			</div>
+		</div>
+        <div class="btwrap">
+            <input type="submit" value="수정하기" th:formaction="@{/customer/update(customer=${customer})}"> 
+			<input type="submit" value="회원탈퇴" th:formaction="@{/customer/delete(customer_email)}">
+        </div>
+    </form>
+    
+	<script src="https://kit.fontawesome.com/d1fa9340d9.js" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script>
+		$(function() {
+			$(".lnb, .lnbclose").hide();
+			$(".user").click(function() {
+				$(".lnb, .lnbclose").toggle();
+			})
+	
+			$('.lnbclose').click(function() {
+				$('.lnb, .lnbclose').hide();
+			})
+		});
+	    
+	    $(document).ready(function () {
+            $("#Imgfile").on("change", handleImgsFilesSelect);
+        });
+	    
+	    var filesArr = [];
+	    
+	    function handleImgsFilesSelect(e) {
+            filesArr.splice(0,filesArr.length);
+            $('.customerImg').find('img').remove();
+            
+            var files = e.target.files;
+            filesArr = Array.prototype.slice.call(files);
+
+            filesArr.forEach(function (f, index) {
+
+            	console.log(f);
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var img_html = "<img src=\"" + e.target.result + "\" />";
+                    $(".customerImg").append(img_html);
+                }
+                reader.readAsDataURL(f);
+            });
+        }
+    </script>
+</body>
+
+</html>

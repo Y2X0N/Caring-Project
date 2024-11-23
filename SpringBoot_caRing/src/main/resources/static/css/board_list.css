@@ -1,0 +1,405 @@
+@font-face {
+	font-family: 'ocr';
+	src: url('/font/OCR-B\ 10\ BT.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Pretendard-Regular';
+	src:
+		url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+		format('woff');
+	font-weight: 400;
+	font-style: normal;
+	unicode-range: U+AC00-D7A3;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+button {
+	border: 0;
+	background-color: transparent;
+}
+body, input, i, label, button {
+    font-family: 'ocr', 'Pretendard-Regular';
+    color: #6e7a77;
+}
+
+header {
+    position: relative;
+    background-color: white;
+    border-bottom: 3px solid #6e7a77;
+}
+
+.hwrap {
+    height: 70px;
+    display: flex;
+    align-items: center;
+	justify-content: space-between;
+}
+
+.logo {
+    margin-left: 20px;
+}
+
+.user {
+	margin-right: 20px;
+}
+
+.user img {
+    width: 35px;
+}
+
+.lnb-container {
+    position: relative;
+}
+
+.lnbPro {
+    width: 400px;
+    background-color: white;
+    border-radius: 30px;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    border: 3px solid #6e7a77;
+    font-weight: 700;
+    color: #6e7a77;
+    z-index: 200;
+    display: none;
+}
+
+.lnbPro ul {
+    margin-left: 15px;
+    padding: 27px;
+    padding-bottom: 0;
+}
+
+.lnbPro ul li {
+    margin-bottom: 27px;
+}
+
+.lnbPro span {
+    display: block;
+    width: 300px;
+    height: 3px;
+}
+.lnbclosePro {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+hr {
+    width: 350px;
+    margin-left: 22px;
+}
+
+#googleMap {
+	width: 45%;
+	height: 800px; position : absolute;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+}
+
+/* 서치바 */
+.carSearch {
+	font-weight: 700;
+	width: fit-content;
+	border-radius: 50px;
+	display: flex;
+	font-size: 14px;
+}
+
+.searchbt {
+	margin-left: 12px;
+}
+.searchbt i {
+	
+	font-size: 20px;
+}
+.where input {
+	width: 270px;
+}
+.flatpickr input {
+	width: 150px;
+}
+form input {
+	border: none; 
+	border-bottom: 2px solid #6e7a77;
+	padding: 5px;
+}
+
+
+
+
+
+
+.carwrap {
+	width: 100%;
+	height: 800px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	overflow: auto;
+}
+
+.boardWrap {
+	width: 55%;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.car {
+	display: flex;
+	width: 48%;
+	height: 240px;
+	border-radius: 30px;
+	overflow: hidden;
+	box-shadow: 5px 5px 10px #ccc;
+	margin-bottom: 30px;
+	margin-left: 16px;
+	position: relative;
+}
+
+.car>a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.carImage {
+	height: 100%;
+	width: 250px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.carDetail {
+	height: 40px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	margin-bottom: 24px;
+}
+
+.carInfo {
+	width: 240px;
+	height: 100%; 
+	position : absolute;
+	top: 0;
+	right: 0;
+	position: absolute;
+}
+
+.carName {
+	font-size: 20px;
+	line-height: 30px;
+	margin-top: 20px;
+}
+
+.won {
+	font-family: 'ChosunGu';
+	font-size: 14px;
+}
+
+.serachFilterBar {
+	display: flex;
+	height: 30px;
+	padding: 16px 24px;
+	position: relateive;
+	top: 80px;
+	z-index: 1;
+}
+
+.searchFilter {
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 700;
+	height: 34px;
+	line-height: 33px;
+	outline: none;
+	padding: 0 14px;
+	position: relative;
+	text-align: center;
+}
+
+.buttontogle {
+	border: 1px solid #e7e7e8;
+	border-radius: 8px;
+	height: 32px;
+	line-height: 12px;
+	margin-right: 16px;
+	padding: 8px 16px;
+}
+
+.carSearch label {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.img {
+	width: 240px;
+	height: 240px;
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.lnb-container {
+	position: absolute;
+	left: 0;
+	top: 30px;
+}
+
+.lnb {
+	width: 100px;
+	height: 110px;
+	background-color: white;
+	border-radius: 10px;
+	position: relative;
+	border: 2px solid #6e7a77;
+	font-weight: 600;
+	color: #6e7a77;
+	z-index: 100;
+    display: none;
+}
+
+.lnbclose {
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.lnb1 {
+	width: 400px;
+	height: 80px;
+	background-color: white;
+	border-radius: 10px;
+	position: relative;
+	border: 2px solid #6e7a77;
+	font-weight: 600;
+	color: #6e7a77;
+	z-index: 100;
+    display: none;
+}
+
+.lnbclose1 {
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.lnb2 {
+	width: 360px;
+	height: 310px;
+	background-color: white;
+	border-radius: 10px;
+	position: relative;
+	border: 2px solid #6e7a77;
+	font-weight: 600;
+	color: #6e7a77;
+	overflow: auto;
+	z-index: 100;
+	padding: 20px;
+	text-align: left;
+    display: none;
+}
+
+.lnbclose2 {
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+.carInfowrap {
+	font-size: 3px;
+	color: black;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 16px;
+}
+.carInfowrap label {
+	margin-right: 12px;
+}
+.h3 {
+	align-content: left;
+}
+.seat label {
+	margin-left: 5px;
+}
+
+
+#detailPhoto {
+    text-align: center;
+}
+
+#detailPhoto img {
+    max-width: 100%; 
+    max-height: 200px;
+}
+
+#detailBox {
+    display: block;
+    align-items: center;
+}
+
+#detailContent {
+   font-family: 'ocr';
+    margin: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.price {
+   font-family: 'ocr';
+   font-size: 15px;
+    border-top: 1px solid lightgray;
+    font-weight: bold;
+    text-align:right;
+    margin: 10px;
+}
+.gm-style .gm-style-iw-c {
+   margin-left: 10px;
+   margin-right: 5px;
+}
+.gm-style-iw-d{
+   margin-left: 11px;
+   margin-right: 5px;
+   margin-top: 5px;
+}

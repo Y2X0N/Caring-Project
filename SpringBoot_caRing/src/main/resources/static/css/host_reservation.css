@@ -1,0 +1,207 @@
+@font-face {
+	font-family: 'ocr';
+	src: url('/font/OCR-B\ 10\ BT.ttf') format('truetype');
+}
+
+@font-face {
+	font-family: 'Pretendard-Regular';
+	src:
+		url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+		format('woff');
+	font-weight: 400;
+	font-style: normal;
+	unicode-range: U+AC00-D7A3;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: inherit;
+	color: inherit;
+}
+
+ul {
+	list-style: none;
+}
+
+img {
+	vertical-align: top;
+}
+
+button {
+	border: none;
+	background-color: transparent;
+	color: #dbcba0;
+}
+
+body {
+	font-family: 'ocr', 'Pretendard-Regular';
+	color: #6e7a77;
+}
+
+header {
+	position: relative;
+	background-color: #6e7a77;
+	color: #dbcba0;
+}
+
+.hwrap {
+	height: 70px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+header h1 {
+	font-size: 12px;
+}
+
+.mainlogo {
+	text-align: center;
+	font-family: 'ocr';
+	margin-left: 20px;
+}
+
+.profile {
+	display: flex;
+	margin-right: 20px;
+}
+.profileImg {
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+.profileImg img {
+	width: 100%;
+	height: 100%;
+    object-fit: cover;
+}
+
+.profile button {
+	font-size: 16px;
+}
+
+.lnb-container {
+	position: relative;
+}
+
+.lnb {
+	width: 400px;
+	background-color: white;
+	border-radius: 30px;
+	position: absolute;
+	top: -10px;
+	right: 20px;
+	border: 3px solid #6e7a77;
+	font-weight: 700;
+	color: #6e7a77;
+}
+
+.lnb ul {
+	margin-left: 15px;
+	padding: 27px;
+	padding-bottom: 0;
+}
+
+.lnb ul li {
+	margin-bottom: 27px;
+}
+
+.lnb span {
+	display: block;
+	width: 300px;
+	height: 3px;
+}
+
+.lnbclose {
+	background-color: transparent;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+hr {
+	width: 350px;
+	margin-left: 22px;
+}
+.warp {
+	width: 1200px;
+	margin: 0 auto;
+	margin-top: 60px;
+}
+.mainwrap {
+	width: fit-content;
+	display: flex;
+	margin: 0 auto;
+	margin-top: 40px;
+}
+.warp>h1{
+	border-bottom: 2px solid #6e7a77;
+}
+.carImg {
+	width: 480px;
+	height: 300px;
+	border-radius: 20px;
+	overflow: hidden;
+	margin: 35px auto;
+}
+.carImg img, .customerphoto img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.car, .reservation {
+	width: 550px;
+	height: 485px;
+	border: 2px solid #6e7a77;
+	border-radius: 20px;
+	padding-bottom: 35px;
+}
+.price {
+	font-size: 22px;
+}
+.car {
+	margin-right: 24px;
+	text-align: center;
+}
+.map {
+	width: 480px;
+	height: 250px;
+	border-radius: 10px;
+	margin: 35px auto;
+}
+.customerinfo {
+	width: fit-content;
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	
+}
+.email {
+	margin: 16px 0;
+}
+.customerphoto {
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin-right: 36px;
+}
+.btwrap {
+    margin: 0 auto;
+    width: fit-content;
+}
+.btwrap input {
+    margin: 35px;
+    width: 200px;
+    height: 50px;
+    border-radius: 15px;
+    background-color: #b6bebc;
+    box-shadow: 3px 3px 3px grey;
+}

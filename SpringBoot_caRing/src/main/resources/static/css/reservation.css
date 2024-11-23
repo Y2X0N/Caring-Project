@@ -1,0 +1,248 @@
+@font-face {
+    font-family: 'ocr';
+    src: url('/font/OCR-B\ 10\ BT.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    unicode-range: U+AC00-D7A3;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    color: #dbcba0;
+}
+
+body, input, p {
+    font-family: 'ocr', 'Pretendard-Regular';
+}
+
+header {
+    position: relative;
+    background-color: white;
+    border-bottom: 3px solid #6e7a77;
+}
+
+.hwrap {
+    height: 70px;
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    position: absolute;
+    left: 20px;
+}
+
+.userwrap {
+    position: absolute;
+    right: 20px;
+}
+
+.user {
+    position: absolute;
+    right: 20px;
+}
+
+.user img {
+    width: 35px;
+}
+
+.lnb-container {
+    position: relative;
+}
+
+.lnb {
+    width: 400px;
+    background-color: white;
+    border-radius: 30px;
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    border: 3px solid #6e7a77;
+    font-weight: 700;
+    color: #6e7a77;
+}
+
+.lnb ul {
+    margin-left: 15px;
+    padding: 27px;
+    padding-bottom: 0;
+}
+
+.lnb ul li {
+    margin-bottom: 27px;
+}
+
+.lnb span {
+    display: block;
+    width: 300px;
+    height: 3px;
+}
+.lnbclose {
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+hr {
+    width: 350px;
+    margin-left: 22px;
+}
+
+
+.reservationwrap {
+    margin: 60px auto;
+    width: 1200px;
+    display: flex;
+}
+.revservation {
+    width: 50%;
+    color: #6e7a77;
+}
+.revservation>h1 {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+.data {
+    display: flex;
+    justify-content: space-between;
+    border-top: 2px solid #6e7a77;
+    padding-top: 20px;
+}
+.data p {
+    font-size: 16px;
+}
+.dateTitle {
+    width: 200px;
+}
+.dateTitle, label {
+    margin-left: 40px;
+}
+.date {
+    width: 400px;
+    text-align: right;
+    margin-right: 40px;
+}
+h3 {
+    font-size: 30px;
+    margin-left: 45px;
+    margin-top: 55px;
+}
+.wrap {
+    width: 200px;
+
+}
+
+.wrap1 {
+    width: 500px;
+}
+h2 {
+    padding: 20px;
+    border-top: 2px solid #6e7a77;
+}
+.check {
+    margin-top: 30px;
+    padding-bottom: 10px;
+}
+.label {
+    margin: 15px 0;
+    display: flex;
+    justify-content: space-between;
+}
+label, .label>input {
+    display: block;
+}
+.label>input {
+    margin-right: 40px;
+}
+.submitWrap {
+    text-align: center;
+}
+.submit {
+    width: 250px;
+    height: 60px;
+    border-radius: 15px;
+    font-size: 20px;
+    margin: 0 auto;
+    border: none;
+    color: #6e7a77;
+    margin-top: 20px;
+    text-aligh: center;
+}
+.resBtn {
+	text-align: center;
+}
+.carinfo {
+    width: 50%;
+}
+.border {
+    background-color: #6e7a77;
+    width: 400px;
+    margin: 0 auto;
+    border-radius: 20px;
+    padding-bottom: 36px;
+}
+.carImg {
+    width: 350px;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: 0 auto;
+    margin-bottom: 20px
+}
+.carInfoWrap {
+    width: 350px;
+    background-color:#6e7a77;;
+    margin: 0 auto;
+    color: white;
+}
+.carTitle {
+	font-size: 24px; 
+	margin-bottom: 12px;
+}
+.carImg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+.priceInfo {
+   	text-align: right;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: 2px solid white;
+}
+.totalPrice{
+    text-align: right;
+    font-size: 20px;
+    position: relative;
+    top: 6px;
+}

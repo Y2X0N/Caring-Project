@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.caRing.repository.CustomerMapper">
+    <insert id="saveCustomer">
+        insert into Customer (
+            customer_email,
+            customer_password,
+            customer_name,
+            customer_phone,
+            license
+        ) values (
+            #{customer_email},
+            #{customer_password},
+            #{customer_name},
+            #{customer_phone},
+            #{license}
+        )
+    </insert>
+    
+    <select id="findCustomer" resultType="customer">
+        select * from customer where customer_email = #{customer_email}
+    </select>
+    
+    <select id="customerEmailCheck" resultType="int">
+        select count(customer_email) from customer where customer_email = #{customer_email}
+    </select>
+    
+    
+    
+    <!-- bomi -->
+     
+    <update id="updateCustomer" parameterType="customer">
+      update customer
+      <set>
+         customer_password = #{customer_password},
+         customer_name = #{customer_name},
+         customer_phone = #{customer_phone},
+         license = #{license},
+         <if test="customer_img != null">
+            customer_img = #{customer_img},
+         </if>
+      </set>
+      where customer_email = #{customer_email}
+   </update>
+
+   <delete id="removeCustomer">
+      delete from customer where customer_email = #{customer_email}
+   </delete>
+ 	
+ 	<select id="findCustomerByReviewId" resultType="customer">
+      SELECT c.*
+      FROM review v
+      JOIN reservation r ON r.reservation_id = v.reservation_id
+      JOIN customer c ON c.customer_email = r.customer_email
+      WHERE v.review_id = #{review_id}
+
+   </select>
+ 
+ </mapper>
+	

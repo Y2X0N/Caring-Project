@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/customer_login.css">
+    <title>User Login</title>
+</head>
+
+<body>
+    <form action="/customer/login" method="post" th:object="${customerLoginForm}">
+    	<div th:if="${#fields.hasGlobalErrors()}">
+	       <p th:each="err: ${#fields.globalErrors()}" th:text="${err}" class="error"></p>
+	    </div>
+        <h1>User Login</h1>
+        <input type="text" placeholder="id" class="info" th:field="*{customer_email}"><br>
+        <div th:errors="*{customer_email}" class="error"></div>
+        <input type="password" placeholder="password" class="info" th:field="*{customer_password}"><br>
+        <div th:errors="*{customer_password}" class="error"></div>
+        <input type="submit" value="login" class="loginbt"><br>
+        <a href="/customer/join">회원가입</a><br>
+    </form>
+</body>
+</html>

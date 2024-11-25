@@ -25,15 +25,15 @@
          	customer_email,
          	board_id,
          	total_price,
-         	rent_start,
-         	rent_end
+         	rental_start,
+         	rental_end
        	) values (
 			#{reservation_id},
 			#{customer_email},
 			#{board_id},
 			#{total_price},
-			#{rent_start},
-			#{rent_end}
+			#{rental_start},
+			#{rental_end}
 		)
     </insert>
     
@@ -45,8 +45,8 @@
           r.CUSTOMER_EMAIL,
           r.BOARD_ID,
           r.TOTAL_PRICE, 
-          r.RENT_START,
-          r.RENT_END,
+          r.RENTAL_START,
+          r.RENTAL_END,
           r.STATUS
       FROM 
          reservation r
@@ -57,12 +57,12 @@
       WHERE 
          b.host_email = #{host_email}
       order by
-         rent_start DESC
+         rental_start DESC
     </select>
     
     <!-- 유저 예약 조회 -->
     <select id="findReservationByCustomerEmail" resultType="reservation">
-       select * from reservation where customer_email = #{customer_email} order by rent_end DESC
+       select * from reservation where customer_email = #{customer_email} order by rental_end DESC
     </select>
     
     <update id="updateStatus">
